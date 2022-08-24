@@ -1,0 +1,49 @@
+---
+_schema-version: "3.1"
+ID: btp_documentation
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+    enable-parallel-deployments: true
+build-parameters:
+    before-all:
+        - builder: custom
+          commands:
+              - npx -p @sap/cds-dk cds build --production
+
+modules:
+    - name: btp_documentation-srv
+      type: nodejs
+      path: gen/srv
+      parameters:
+          buildpack: nodejs_buildpack
+      build-parameters:
+          builder: npm-ci
+      provides:
+          - name: srv-api # required by consumers of CAP services (e.g. approuter)
+            properties:
+                srv-url: ${default-url}
+      requires:
+          - name: btp_documentation-dest
+          - name: btp_documentation_uaa
+
+resources:
+    - name: btp_documentation-dest
+      type: org.cloudfoundry.managed-service
+      parameters:
+          service: destination
+          service-name: btp_documentation-dest-srv
+          service-plan: lite
+      requires:
+          - name: srv-api
+
+    - name: btp_documentation_uaa
+      type: org.cloudfoundry.managed-service
+      parameters:
+          service-plan: application
+          service-name: btp_documentation-xsuaa-service
+          service: xsuaa
+          path: ./xs-security.json
+          config:
+              xsappname: "btp_documentation-${space}"
+              tenant-mode: dedicated

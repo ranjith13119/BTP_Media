@@ -1,0 +1,13 @@
+###
+
+POST http://localhost:4004/documents/sendMail
+Content-Type: application/json 
+
+
+{
+    "to" : "ranjith7207@gmail.com", 
+    "Subject" : "test mail from CF"
+}
+
+###
+GET http://localhost:4004/documents/getDocument()
