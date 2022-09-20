@@ -6,8 +6,9 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@sap/cds": ">=5",
+    "@sap/cds": "^5",
     "@sap/xssec": "^3",
+    "@sap/xsenv": "3.3.2",
     "dynamic-html-pdf": "^1.0.4",
     "easy-template-x": "^3.0.0",
     "easy-template-x-angular-expressions": "^0.1.0",

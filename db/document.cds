@@ -13,3 +13,9 @@ entity Document : cuid, managed {
     mediaType : String;
     filename  : String;
 }
+
+
+entity CPI {
+    Id   : Integer;
+    name : String;
+}

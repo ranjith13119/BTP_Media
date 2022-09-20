@@ -8,6 +8,7 @@ class Documents extends cds.ApplicationService {
         this.on("getPDFFromHTML", Stream.exportPDFfromHTML);
         this.on("getPDFDocument", Stream.DocumentPDFExtract);
         this.on("getWordDoc", Stream.DocumnetWordExtract);
+        this.on("sendPayload", Stream.checkOutlookRespose)
         return super.init();
     }
 }

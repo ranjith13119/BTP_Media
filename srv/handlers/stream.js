@@ -13,12 +13,66 @@ const { createResolver } = require("easy-template-x-angular-expressions");
 
 const sendEmail = async (req) => {
     const { to, Subject } = req.data;
-    const mailer = new SapCFMailer.default("MailTrap");
+    const mailer = new SapCFMailer.default("bpmworkflowruntime_mail");
     const mailTemplate = fs.readFileSync(path.join(__dirname, '../', 'templates/mail', 'emailTemp.html'), { encoding: 'utf-8' });
     var template = handlebars.compile(mailTemplate);
+    // var replacements = {
+    //     username: "Ranjithkumar Ayyavu",
+    //     Content: "Test Email SAP CloudFoundry Email"
+    // };
+
+    // for adaptive card
     var replacements = {
-        username: "Ranjithkumar Ayyavu",
-        Content: "Test Email SAP CloudFoundry Email"
+        HeaderTitle: "Interview Schedule Invitation",
+        Content: "Test Email SAP CloudFoundry Email",
+        creator: {
+            "name": "Ranjithkumar Ayyavu",
+            "profileImage": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+        },
+        "createdUtc": "2017-02-14T06:08:39Z",
+        description: "Interview request for the role of BTP Developer",
+        "CandidateName": "XYZ",
+        "CandidateID": "909090",
+        "JobID": "565656",
+        "Experience": "5"
+    };
+    var htmlToSend = template(replacements);
+    let testMail = await mailer.sendMailTemplate({
+        to: to,
+        subject: Subject,
+        html: htmlToSend,
+        attachments: [{     // http://nodemailer.com/message/attachments/
+            filename: 'Ranjith.pdf',
+            path: 'srv/templates/PDF/Ranjith.pdf'
+        }, {
+            filename: 'attach.html',
+            content: htmlToSend
+        }]
+    });
+    return true;
+
+}
+
+const checkOutlookRespose = async (req) => {
+    const { to, Subject } = req.data;
+    const mailer = new SapCFMailer.default("bpmworkflowruntime_mail");
+    const mailTemplate = fs.readFileSync(path.join(__dirname, '../', 'templates/mail', 'emailTemp.html'), { encoding: 'utf-8' });
+    var template = handlebars.compile(mailTemplate);
+
+    // for adaptive card
+    var replacements = {
+        HeaderTitle: "Interview Schedule Invitation",
+        Content: "Test Email SAP CloudFoundry Email",
+        creator: {
+            "name": "Ranjithkumar Ayyavu",
+            "profileImage": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+        },
+        "createdUtc": "2017-02-14T06:08:39Z",
+        description: "Interview request for the role of BTP Developer",
+        "CandidateName": "XYZ",
+        "CandidateID": "909090",
+        "JobID": "565656",
+        "Experience": "5"
     };
     var htmlToSend = template(replacements);
     let testMail = await mailer.sendMailTemplate({
@@ -184,5 +238,6 @@ module.exports = {
     DocumentExtract,
     DocumentPDFExtract,
     exportPDFfromHTML,
-    DocumnetWordExtract
+    DocumnetWordExtract,
+    checkOutlookRespose
 }

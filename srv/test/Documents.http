@@ -1,11 +1,10 @@
 ###
 
-POST http://localhost:4004/documents/sendMail
+POST http://localhost:4004/documents/sendPayload
 Content-Type: application/json 
 
-
 {
-    "to" : "ranjith7207@gmail.com", 
+    "to" : "ranjith13119@zngdb.onmicrosoft.com", 
     "Subject" : "test mail from CF"
 }
 
